@@ -1,7 +1,7 @@
 import random
-import time
 from pynput import keyboard as kb
 import  sys
+import os
 
 
 #INICIALICAR LOS VALORES PARA PINTAR EN PANTALLA
@@ -34,9 +34,14 @@ def print_salto(n):
     for i in range(n):
         print(l_intermedias)
 
-#FUNCION QUE INPRIME EN EL RECUADRO LO QUE SE LE EVNIA
+#FUNCION QUE INPRIME EN EL RECUADRO LO QUE SE LE ENVIA COMO PARAMETRO
 def pantalla(text):
-    print('\n\n\n\n\n\n\n\n\n\n\n\n'+l_completa)
+    if os.name=='posix':
+        os.system('clear')
+    else:
+        os.system('cls')
+
+    print(l_completa)
 
     list_texto = text.split('\n')
     tam=int((tam_y-len(list_texto))/2)
@@ -87,10 +92,10 @@ def Menu_seleccion(tecla):
     global selecion, jugando
     reload=False
 
-    if tecla == kb.KeyCode.from_char('a') and selecion>1:
+    if tecla == kb.Key.left and selecion>1:
         selecion -=1
         reload = True
-    elif tecla == kb.KeyCode.from_char('d') and selecion<3:
+    elif tecla == kb.Key.right and selecion<3:
         selecion += 1
         reload = True
     elif tecla == kb.KeyCode.from_char('x'):
@@ -102,7 +107,7 @@ def Menu_seleccion(tecla):
 
     elif reload or jugando:
         jugando = False
-        tex='selecciona una opción (usa a - d)\n'
+        tex='selecciona una opción \n'
         if selecion==1:
             tex+='Piedra(*)  -  Papel( )  -  Tijera( )'
         elif selecion==2:
@@ -117,7 +122,7 @@ def Menu_seleccion(tecla):
 def pulsa(tecla):
     global inicio
     if not inicio:
-        pantalla('Usa el teclado para navegar en el juego (A,D)\n ⬅ A     D ➡\n Spacio para Seleccionar\n\n¡Preciona cualquier tecla para iniciar! \n\n uaa X para salir en cualquier momento deal juego')
+        pantalla('Usa la feclas en el teclado para navegar en el juego \n <-   -> \n Spacio para Seleccionar\n\n¡Preciona cualquier tecla para iniciar! \n\n uaa X para salir en cualquier momento deal juego')
         inicio=True
     else:
         Menu_seleccion(tecla)
